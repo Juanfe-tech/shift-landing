@@ -998,18 +998,29 @@ try {
   }
 } catch(e) {}
 
-const closeSection = document.getElementById('close-section');
-if (closeSection) {
+// Trigger AFTER user has read "Vas a ser alguien" — fire when "La pregunta es quien" is fully visible, then wait 1.2s for absorption
+const closeTriggers = document.querySelectorAll('#close-section .close-sub');
+let exhaleTimer = null;
+if (closeTriggers.length) {
   const closeObs = new IntersectionObserver((entries) => {
     entries.forEach(e => {
       closeVisible = e.isIntersecting;
       if (e.isIntersecting && audioOn && audioUnlocked && !bellPlayed) {
-        playExhale();
-        bellPlayed = true;
+        if (exhaleTimer) clearTimeout(exhaleTimer);
+        exhaleTimer = setTimeout(() => {
+          if (!bellPlayed) {
+            playExhale();
+            bellPlayed = true;
+          }
+          exhaleTimer = null;
+        }, 1200);
+      } else if (!e.isIntersecting && exhaleTimer) {
+        clearTimeout(exhaleTimer);
+        exhaleTimer = null;
       }
     });
-  }, { threshold: 0.45 });
-  closeObs.observe(closeSection);
+  }, { threshold: 1.0 });
+  closeTriggers.forEach(el => closeObs.observe(el));
 }
 </script>
 
