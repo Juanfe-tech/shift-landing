@@ -57,6 +57,18 @@ nav.scrolled{background:rgba(10,9,8,.85);backdrop-filter:blur(24px);border-color
   transition:all .5s var(--ease-expo);text-decoration:none;letter-spacing:-.005em;
 }
 .nav-cta:hover{background:var(--blush);transform:translateY(-1px);box-shadow:0 10px 32px rgba(245,207,207,.22)}
+.audio-toggle{
+  background:none;border:none;color:var(--muted);cursor:pointer;
+  padding:6px 8px;display:flex;align-items:center;justify-content:center;
+  transition:color .35s var(--ease-expo);
+}
+.audio-toggle:hover{color:var(--cream)}
+.audio-toggle.on{color:var(--blush)}
+.audio-toggle svg{display:block;overflow:visible}
+.audio-toggle .wave{opacity:0;transition:opacity .5s var(--ease-expo)}
+.audio-toggle.on .wave{opacity:1}
+.audio-toggle.firing .wave{animation:waveExpand 1.6s var(--ease-expo)}
+@keyframes waveExpand{0%{transform:scale(1)}50%{transform:scale(1.3)}100%{transform:scale(1)}}
 
 /* ═══════════════ HERO ═══════════════ */
 #hero{
@@ -446,6 +458,13 @@ footer{padding:48px;border-top:1px solid var(--hair);display:flex;justify-conten
 <nav id="main-nav">
   <span class="nav-logo">SHIFT</span>
   <div class="nav-right">
+    <button class="audio-toggle" id="audio-toggle" aria-label="Toggle ambient sound">
+      <svg width="15" height="15" viewBox="0 0 16 16" fill="none">
+        <path d="M2.5 6h2L7 4v8L4.5 10h-2V6z" fill="currentColor"/>
+        <path class="wave" d="M9.5 5.5q1.4 1 1.4 2.5t-1.4 2.5" stroke="currentColor" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+        <path class="wave" d="M11.6 4q2.4 1.6 2.4 4t-2.4 4" stroke="currentColor" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+      </svg>
+    </button>
     <div class="lang-toggle">
       <button class="lang-btn active" data-lang="es">ES</button>
       <span class="lang-divider">·</span>
@@ -488,7 +507,7 @@ footer{padding:48px;border-top:1px solid var(--hair);display:flex;justify-conten
             </div>
             <div class="ms-body">
               <div class="ms-name">SHIFT</div>
-              <div class="ms-g-small lang-es">Martes, el 28</div>
+              <div class="ms-g-small lang-es">Martes 28</div>
               <div class="ms-g-small lang-en">Tuesday, the 28th</div>
               <div class="ms-g lang-es">Buenos días,<br><em>Founder.</em></div>
               <div class="ms-g lang-en">Good morning,<br><em>Founder.</em></div>
@@ -679,8 +698,8 @@ footer{padding:48px;border-top:1px solid var(--hair);display:flex;justify-conten
       </div>
       <div class="tl-row">
         <span class="tl-year">2026</span>
-        <p class="tl-text lang-es"><strong>Eileen Gu</strong>, atleta olímpica de 22 años, articula el mecanismo en una entrevista viral con Fortune. Lo verás en la siguiente página.</p>
-        <p class="tl-text lang-en"><strong>Eileen Gu</strong>, 22-year-old Olympic athlete, articulates the mechanism in a viral Fortune interview. You'll see it next.</p>
+        <p class="tl-text lang-es"><strong>Eileen Gu</strong> — varias medallas olímpicas de oro, estudiante de Stanford, embajadora de Louis Vuitton y Gucci — articula el mecanismo en una entrevista viral con Fortune.</p>
+        <p class="tl-text lang-en"><strong>Eileen Gu</strong> — multiple Olympic gold medalist, Stanford student, Louis Vuitton & Gucci ambassador — articulates the mechanism in a viral Fortune interview.</p>
       </div>
     </div>
 
@@ -887,6 +906,111 @@ try {
     if (browser.startsWith('en')) setLang('en');
   }
 } catch(e) {}
+
+// ═══ Ambient exhale bell on close section ═══
+const audioBtn = document.getElementById('audio-toggle');
+let audioOn = true;            // default ON
+let audioCtx = null;
+let audioUnlocked = false;     // becomes true after first user gesture
+let bellPlayed = false;
+let closeVisible = false;
+
+audioBtn.classList.add('on');  // show as on by default
+
+function ensureAudio(){
+  if (!audioCtx) {
+    try {
+      audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    } catch(e) { return null; }
+  }
+  return audioCtx;
+}
+
+// Unlock audio on first user interaction (browser requirement)
+function unlockAudio(){
+  audioUnlocked = true;
+  const ctx = ensureAudio();
+  if (ctx && ctx.state === 'suspended') ctx.resume();
+  document.removeEventListener('click', unlockAudio);
+  document.removeEventListener('touchstart', unlockAudio);
+  document.removeEventListener('keydown', unlockAudio);
+  // If user already reached close section before interacting, fire now
+  if (closeVisible && audioOn && !bellPlayed) {
+    playExhale();
+    bellPlayed = true;
+  }
+}
+document.addEventListener('click', unlockAudio, { once: true });
+document.addEventListener('touchstart', unlockAudio, { once: true, passive: true });
+document.addEventListener('keydown', unlockAudio, { once: true });
+
+function playExhale(){
+  const ctx = ensureAudio();
+  if (!ctx) return;
+  const doPlay = () => {
+    audioBtn.classList.add('firing');
+    setTimeout(() => audioBtn.classList.remove('firing'), 1600);
+    const t = ctx.currentTime;
+    // C major chord across octaves: C3, G3, C4, E4 — a settling exhale
+    const freqs = [130.81, 196.00, 261.63, 329.63];
+    const amps =  [0.16,  0.12,   0.08,   0.05];
+    const decays = [3.8,   3.2,    2.6,    2.0];
+    freqs.forEach((freq, i) => {
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.frequency.value = freq;
+      osc.type = 'sine';
+      gain.gain.setValueAtTime(0, t);
+      gain.gain.linearRampToValueAtTime(amps[i], t + 0.08);
+      gain.gain.exponentialRampToValueAtTime(0.0001, t + decays[i]);
+      osc.connect(gain).connect(ctx.destination);
+      osc.start(t);
+      osc.stop(t + decays[i] + 0.5);
+    });
+  };
+  if (ctx.state === 'suspended') {
+    ctx.resume().then(doPlay).catch(() => {});
+  } else {
+    doPlay();
+  }
+}
+
+audioBtn.addEventListener('click', (ev) => {
+  ev.stopPropagation();
+  audioOn = !audioOn;
+  audioBtn.classList.toggle('on', audioOn);
+  try { localStorage.setItem('shift-audio', audioOn ? 'on' : 'off'); } catch(e) {}
+  if (audioOn) {
+    audioUnlocked = true;
+    ensureAudio();
+    if (closeVisible && !bellPlayed) {
+      playExhale();
+      bellPlayed = true;
+    }
+  }
+});
+
+// Restore preference — only OFF override (default is on)
+try {
+  if (localStorage.getItem('shift-audio') === 'off') {
+    audioOn = false;
+    audioBtn.classList.remove('on');
+  }
+} catch(e) {}
+
+const closeSection = document.getElementById('close-section');
+if (closeSection) {
+  const closeObs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      closeVisible = e.isIntersecting;
+      if (e.isIntersecting && audioOn && audioUnlocked && !bellPlayed) {
+        playExhale();
+        bellPlayed = true;
+      }
+    });
+  }, { threshold: 0.45 });
+  closeObs.observe(closeSection);
+}
 </script>
 
 </body>
