@@ -1,0 +1,1337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no"/>
+<title>SHIFT — The 10/10 Experience</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500&family=Inter+Tight:wght@300;400;500&display=swap" rel="stylesheet">
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-font-smoothing:antialiased;-webkit-tap-highlight-color:transparent;-webkit-touch-callout:none}
+
+:root{
+  --cream:#F5F2EA;
+  --cream-deep:#EDE8DC;
+  --cream-soft:#FBF9F2;
+  --cream-warm:#F7F3E9;
+  --blush:#F5CFCF;
+  --blush-deep:#E8A5A5;
+  --blush-glow:#F9D9D9;
+  --ink:#0F0E0C;
+  --ink-soft:#3D3A35;
+  --muted:#7A7670;
+  --soft:#A8A39C;
+  --faint:#C8C4BC;
+  --hair:rgba(15,14,12,0.06);
+  --hair-soft:rgba(15,14,12,0.03);
+
+  /* Easing curves — physics-based */
+  --ease-out-expo:cubic-bezier(0.16,1,0.3,1);
+  --ease-out-quint:cubic-bezier(0.22,1,0.36,1);
+  --ease-spring:cubic-bezier(0.34,1.56,0.64,1);
+  --ease-organic:cubic-bezier(0.25,0.46,0.45,0.94);
+}
+
+body{
+  background:#0a0908;
+  font-family:'Inter Tight',sans-serif;
+  letter-spacing:-0.01em;
+  color:var(--ink);
+  min-height:100vh;
+  overflow-x:hidden;
+}
+
+.serif{font-family:'Fraunces',serif;font-weight:400;letter-spacing:-0.025em}
+
+/* ════════════════════════════════════════════════
+   STAGE INTRODUCTION (everything before the phone)
+   ════════════════════════════════════════════════ */
+.intro-stage{
+  padding:80px 24px 60px;
+  text-align:center;
+  color:var(--cream);
+  max-width:700px;
+  margin:0 auto;
+}
+
+.intro-eyebrow{
+  font-family:'Fraunces',serif;font-style:italic;font-size:13px;
+  color:var(--blush);margin-bottom:24px;
+  opacity:0;
+  animation:fadeIn 1.2s var(--ease-out-expo) 0.2s forwards;
+}
+
+.intro h1{
+  font-family:'Fraunces',serif;font-weight:300;
+  font-size:clamp(40px,6vw,68px);
+  letter-spacing:-0.045em;line-height:1;
+  margin-bottom:24px;color:var(--cream);
+  opacity:0;
+  animation:fadeIn 1.4s var(--ease-out-expo) 0.4s forwards;
+}
+.intro h1 em{font-style:italic;color:var(--blush);font-weight:400}
+
+.intro p{
+  color:#A09B92;font-size:17px;line-height:1.7;
+  font-weight:300;max-width:520px;margin:0 auto 40px;
+  opacity:0;
+  animation:fadeIn 1.4s var(--ease-out-expo) 0.7s forwards;
+}
+
+.intro-hint{
+  font-family:'Fraunces',serif;font-style:italic;font-size:13px;
+  color:#7A7670;margin-bottom:60px;
+  display:flex;align-items:center;justify-content:center;gap:10px;
+  opacity:0;
+  animation:fadeIn 1.4s var(--ease-out-expo) 1s forwards, pulse-hint 2.4s ease-in-out 2s infinite;
+}
+.intro-hint::before, .intro-hint::after{
+  content:'';width:30px;height:1px;background:rgba(245,242,234,0.2);
+}
+
+@keyframes fadeIn{
+  from{opacity:0;transform:translateY(12px)}
+  to{opacity:1;transform:translateY(0)}
+}
+
+@keyframes pulse-hint{
+  0%,100%{opacity:0.6}
+  50%{opacity:1}
+}
+
+/* ════════════════════════════════════════════════
+   PHONE FRAME
+   ════════════════════════════════════════════════ */
+.phone-stage{
+  display:flex;justify-content:center;
+  padding:0 24px 60px;
+  perspective:1500px;
+}
+
+.phone-tilt{
+  transform-style:preserve-3d;
+  animation:phone-float 6s var(--ease-organic) infinite alternate;
+}
+
+@keyframes phone-float{
+  from{transform:translateY(0) rotateY(-2deg)}
+  to{transform:translateY(-12px) rotateY(2deg)}
+}
+
+.phone{
+  width:380px;
+  background:var(--cream);
+  border-radius:54px;
+  padding:14px;
+  border:6px solid #1a1816;
+  box-shadow:
+    0 80px 160px rgba(0,0,0,0.55),
+    0 40px 80px rgba(0,0,0,0.4),
+    0 16px 32px rgba(0,0,0,0.3),
+    0 0 0 1px rgba(245,207,207,0.04),
+    inset 0 0 0 1px rgba(255,255,255,0.05);
+  position:relative;
+}
+
+/* Subtle pink halo around phone */
+.phone::before{
+  content:'';position:absolute;inset:-40px;
+  background:radial-gradient(ellipse,rgba(245,207,207,0.08) 0%,rgba(245,207,207,0) 60%);
+  pointer-events:none;z-index:-1;
+  filter:blur(20px);
+}
+
+.phone-screen{
+  background:var(--cream);
+  border-radius:42px;
+  overflow:hidden;
+  position:relative;
+  height:780px;
+  cursor:default;
+
+  /* Multi-layered atmospheric gradient — like dawn light on cotton paper */
+  background:
+    radial-gradient(
+      ellipse 130% 70% at 50% -10%,
+      rgba(245,207,207,0.22) 0%,
+      rgba(245,207,207,0) 55%
+    ),
+    radial-gradient(
+      ellipse 80% 50% at 100% 30%,
+      rgba(232,165,165,0.08) 0%,
+      rgba(232,165,165,0) 60%
+    ),
+    radial-gradient(
+      ellipse 100% 60% at 50% 110%,
+      rgba(237,232,220,0.7) 0%,
+      rgba(237,232,220,0) 70%
+    ),
+    var(--cream);
+}
+
+/* Subtle film grain texture overlay */
+.phone-screen::after{
+  content:'';
+  position:absolute;inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4'/%3E%3CfeColorMatrix values='0 0 0 0 0.06 0 0 0 0 0.05 0 0 0 0 0.05 0 0 0 0.025 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  pointer-events:none;
+  opacity:0.7;
+  mix-blend-mode:multiply;
+}
+
+/* ════════════════════════════════════════════════
+   STATUS BAR
+   ════════════════════════════════════════════════ */
+.status{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:18px 32px 0;font-size:14px;font-weight:600;color:var(--ink);
+  position:relative;z-index:2;
+}
+.status-right{display:flex;gap:6px;align-items:center;font-size:11px}
+
+/* ════════════════════════════════════════════════
+   CONTENT CONTAINER (scrollable)
+   ════════════════════════════════════════════════ */
+.content{
+  padding:24px 28px 32px;
+  position:relative;z-index:2;
+  height:calc(100% - 30px);
+  overflow-y:auto;
+  scrollbar-width:none;
+}
+.content::-webkit-scrollbar{display:none}
+
+/* Stagger entrance for everything */
+.stagger > * {
+  opacity:0;
+  transform:translateY(16px);
+  animation:stagger-in 0.9s var(--ease-out-expo) forwards;
+}
+.stagger > *:nth-child(1){animation-delay:1.4s}
+.stagger > *:nth-child(2){animation-delay:1.55s}
+.stagger > *:nth-child(3){animation-delay:1.7s}
+.stagger > *:nth-child(4){animation-delay:1.85s}
+.stagger > *:nth-child(5){animation-delay:2.0s}
+.stagger > *:nth-child(6){animation-delay:2.15s}
+.stagger > *:nth-child(7){animation-delay:2.3s}
+.stagger > *:nth-child(8){animation-delay:2.45s}
+
+@keyframes stagger-in{
+  to{opacity:1;transform:translateY(0)}
+}
+
+/* ════════════════════════════════════════════════
+   APP HEADER
+   ════════════════════════════════════════════════ */
+.app-header{
+  display:flex;justify-content:space-between;align-items:center;
+  margin-bottom:32px;padding-top:8px;
+}
+.app-name{
+  font-family:'Fraunces',serif;font-weight:500;font-size:14px;
+  letter-spacing:0.08em;text-transform:uppercase;color:var(--ink);
+}
+.app-menu{
+  width:36px;height:36px;border-radius:999px;
+  display:flex;align-items:center;justify-content:center;
+  background:rgba(15,14,12,0.04);font-size:14px;color:var(--muted);
+  letter-spacing:0.1em;
+  transition:all 0.4s var(--ease-out-expo);
+  cursor:pointer;
+}
+.app-menu:hover{background:rgba(15,14,12,0.08);transform:scale(1.05)}
+
+/* ════════════════════════════════════════════════
+   HERO
+   ════════════════════════════════════════════════ */
+.hero{margin-bottom:36px}
+.hero-greeting{
+  font-family:'Fraunces',serif;font-style:italic;font-weight:300;
+  font-size:13px;color:var(--muted);
+  margin-bottom:12px;
+}
+.hero-name{
+  font-family:'Fraunces',serif;font-weight:300;
+  font-size:42px;letter-spacing:-0.04em;line-height:1;
+  color:var(--ink);
+}
+.hero-name em{font-style:italic;color:var(--ink-soft);font-weight:300}
+
+/* ════════════════════════════════════════════════
+   DAY OBJECT — the heart of the screen
+   ════════════════════════════════════════════════ */
+.day-object{margin-bottom:40px}
+
+.day-meta{
+  display:flex;justify-content:space-between;align-items:baseline;
+  margin-bottom:12px;
+}
+.day-meta-label{
+  font-family:'Fraunces',serif;font-style:italic;font-size:13px;
+  color:var(--muted);
+}
+
+.day-number-row{
+  display:flex;align-items:baseline;gap:14px;margin-bottom:24px;
+}
+.day-number{
+  font-family:'Fraunces',serif;font-weight:300;
+  font-size:104px;letter-spacing:-0.07em;line-height:0.85;color:var(--ink);
+  position:relative;
+}
+
+/* Animated day number — counts up on load */
+.day-number-inner{
+  display:inline-block;
+  animation:count-up 1.2s var(--ease-out-expo) 1.6s both;
+}
+@keyframes count-up{
+  from{opacity:0;transform:translateY(20px) scale(0.95)}
+  to{opacity:1;transform:translateY(0) scale(1)}
+}
+
+.day-of{
+  font-family:'Fraunces',serif;font-style:italic;font-weight:300;
+  font-size:24px;color:var(--soft);
+}
+
+/* Progress arc */
+.day-arc{
+  position:relative;height:2px;
+  background:rgba(15,14,12,0.06);
+  border-radius:2px;overflow:hidden;
+  margin-bottom:16px;
+}
+.day-arc-fill{
+  position:absolute;top:0;left:0;height:100%;
+  width:0;
+  background:linear-gradient(90deg,var(--blush-deep),var(--blush));
+  border-radius:2px;
+  box-shadow:0 0 10px rgba(232,165,165,0.5);
+  animation:arc-fill 2s var(--ease-out-expo) 2.2s forwards;
+}
+@keyframes arc-fill{
+  to{width:14.4%}
+}
+
+/* Subtle shimmer that travels across the arc fill */
+.day-arc-fill::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,0.6),transparent);
+  animation:shimmer 3s ease-in-out 4s infinite;
+}
+@keyframes shimmer{
+  0%{transform:translateX(-100%)}
+  100%{transform:translateX(800%)}
+}
+
+.day-streak-row{
+  display:flex;justify-content:space-between;align-items:center;
+}
+.streak-label{
+  font-family:'Fraunces',serif;font-style:italic;font-size:13px;
+  color:var(--muted);
+}
+.streak-dots{display:flex;gap:5px}
+.streak-dot{
+  width:7px;height:7px;border-radius:999px;
+  background:var(--blush-deep);
+  opacity:0;
+  animation:dot-appear 0.4s var(--ease-out-expo) forwards;
+}
+.streak-dot.empty{
+  background:rgba(15,14,12,0.08);
+}
+
+@keyframes dot-appear{
+  from{opacity:0;transform:scale(0.5)}
+  to{opacity:1;transform:scale(1)}
+}
+
+/* Stagger streak dots */
+.streak-dot:nth-child(1){animation-delay:2.5s}
+.streak-dot:nth-child(2){animation-delay:2.55s}
+.streak-dot:nth-child(3){animation-delay:2.6s}
+.streak-dot:nth-child(4){animation-delay:2.65s}
+.streak-dot:nth-child(5){animation-delay:2.7s}
+.streak-dot:nth-child(6){animation-delay:2.75s}
+.streak-dot:nth-child(7){animation-delay:2.8s}
+.streak-dot:nth-child(8){animation-delay:2.85s}
+.streak-dot:nth-child(9){animation-delay:2.9s}
+.streak-dot:nth-child(10){animation-delay:2.95s}
+.streak-dot:nth-child(11){animation-delay:3s}
+.streak-dot:nth-child(12){animation-delay:3.05s}
+.streak-dot:nth-child(13){animation-delay:3.1s}
+.streak-dot:nth-child(14){animation-delay:3.15s}
+
+/* The active streak dot pulses gently */
+.streak-dot:nth-child(12){
+  animation:dot-appear 0.4s var(--ease-out-expo) 3.05s forwards, dot-pulse 2s ease-in-out 4s infinite;
+}
+@keyframes dot-pulse{
+  0%,100%{box-shadow:0 0 0 0 rgba(232,165,165,0.6)}
+  50%{box-shadow:0 0 0 6px rgba(232,165,165,0)}
+}
+
+/* ════════════════════════════════════════════════
+   LESSON CARD — the precious dark object
+   ════════════════════════════════════════════════ */
+.lesson-card{
+  background:var(--ink);color:var(--cream);
+  border-radius:32px;
+  padding:32px 28px;
+  margin-bottom:36px;
+  position:relative;overflow:hidden;
+  cursor:pointer;
+  transition:transform 0.6s var(--ease-out-expo), box-shadow 0.6s var(--ease-out-expo);
+  box-shadow:
+    0 12px 36px rgba(15,14,12,0.18),
+    0 4px 12px rgba(15,14,12,0.1);
+}
+
+.lesson-card:hover{
+  transform:translateY(-3px);
+  box-shadow:
+    0 20px 48px rgba(15,14,12,0.25),
+    0 8px 16px rgba(15,14,12,0.15);
+}
+
+.lesson-card:active{
+  transform:translateY(-1px) scale(0.985);
+  transition:transform 0.15s ease;
+}
+
+/* Atmospheric glow inside the card */
+.lesson-card::before{
+  content:'';position:absolute;
+  top:-50%;right:-30%;
+  width:280px;height:280px;
+  background:radial-gradient(circle,rgba(245,207,207,0.18) 0%,rgba(245,207,207,0) 65%);
+  pointer-events:none;
+  animation:glow-drift 10s ease-in-out infinite alternate;
+}
+
+.lesson-card::after{
+  content:'';position:absolute;
+  bottom:-40%;left:-20%;
+  width:200px;height:200px;
+  background:radial-gradient(circle,rgba(212,132,111,0.08) 0%,rgba(212,132,111,0) 70%);
+  pointer-events:none;
+  animation:glow-drift 12s ease-in-out 2s infinite alternate-reverse;
+}
+
+@keyframes glow-drift{
+  from{transform:translate(0,0) scale(1)}
+  to{transform:translate(30px,20px) scale(1.1)}
+}
+
+.lesson-meta{
+  display:flex;justify-content:space-between;align-items:center;
+  margin-bottom:24px;position:relative;
+}
+.lesson-chapter{
+  font-family:'Fraunces',serif;font-style:italic;font-size:12px;
+  color:var(--blush);letter-spacing:-0.005em;
+}
+.lesson-time{
+  font-family:'Fraunces',serif;font-style:italic;font-size:11px;
+  color:rgba(245,242,234,0.4);
+}
+
+.lesson-title{
+  font-family:'Fraunces',serif;font-weight:300;
+  font-size:28px;letter-spacing:-0.03em;line-height:1.12;
+  margin-bottom:18px;color:var(--cream);position:relative;
+}
+.lesson-title em{font-style:italic;color:var(--blush);font-weight:400}
+
+.lesson-preview{
+  font-size:14.5px;line-height:1.65;
+  color:rgba(245,242,234,0.75);
+  margin-bottom:24px;font-weight:300;position:relative;
+}
+
+.lesson-cta{
+  display:flex;align-items:center;gap:10px;
+  font-family:'Fraunces',serif;font-style:italic;font-size:14px;
+  color:var(--blush);position:relative;
+}
+
+.lesson-cta-arrow{
+  font-size:18px;
+  transition:transform 0.4s var(--ease-out-expo);
+}
+.lesson-card:hover .lesson-cta-arrow{
+  transform:translateX(6px);
+}
+
+/* ════════════════════════════════════════════════
+   PRACTICE SECTION
+   ════════════════════════════════════════════════ */
+.practice-section{margin-bottom:36px}
+
+.section-head{
+  display:flex;justify-content:space-between;align-items:baseline;
+  margin-bottom:20px;
+}
+.section-title{
+  font-family:'Fraunces',serif;font-weight:300;font-size:24px;
+  letter-spacing:-0.03em;color:var(--ink);
+}
+.section-title em{font-style:italic}
+.section-meta{
+  font-family:'Fraunces',serif;font-style:italic;font-size:13px;
+  color:var(--muted);
+  transition:all 0.5s var(--ease-out-expo);
+}
+
+.practice-row{
+  display:flex;align-items:center;gap:16px;
+  padding:20px 22px;margin-bottom:8px;
+  background:rgba(255,255,255,0.5);
+  border:1px solid var(--hair);
+  border-radius:20px;
+  transition:all 0.5s var(--ease-out-expo);
+  cursor:pointer;
+  position:relative;
+  overflow:hidden;
+}
+
+.practice-row:hover{
+  background:rgba(255,255,255,0.7);
+  transform:translateX(2px);
+}
+
+.practice-row.done{
+  background:linear-gradient(135deg,var(--blush) 0%,var(--blush) 100%);
+  border-color:transparent;
+  box-shadow:0 4px 12px rgba(232,165,165,0.18);
+}
+
+/* The seal animation when completing */
+.practice-row.sealing::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,var(--blush),var(--blush-deep));
+  border-radius:20px;
+  opacity:0;
+  animation:seal-flash 0.6s var(--ease-out-expo);
+  pointer-events:none;
+}
+
+@keyframes seal-flash{
+  0%{opacity:0;transform:scale(1)}
+  30%{opacity:0.4;transform:scale(1)}
+  100%{opacity:0;transform:scale(1)}
+}
+
+.practice-check{
+  width:26px;height:26px;border-radius:8px;
+  border:1.5px solid rgba(15,14,12,0.2);
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;
+  transition:all 0.5s var(--ease-spring);
+  background:transparent;
+  color:transparent;
+}
+
+.practice-row.done .practice-check{
+  background:var(--ink);
+  border-color:var(--ink);
+  color:var(--cream);
+  font-size:13px;font-weight:600;
+  transform:rotate(0deg) scale(1);
+  animation:check-seal 0.6s var(--ease-spring);
+}
+
+@keyframes check-seal{
+  0%{transform:rotate(-180deg) scale(0)}
+  60%{transform:rotate(15deg) scale(1.15)}
+  100%{transform:rotate(0deg) scale(1)}
+}
+
+.practice-text{
+  flex:1;font-size:15px;color:var(--ink);
+  line-height:1.4;letter-spacing:-0.005em;
+  transition:all 0.5s var(--ease-out-expo);
+}
+.practice-row.done .practice-text{
+  text-decoration:line-through;
+  text-decoration-color:rgba(15,14,12,0.3);
+  text-decoration-thickness:1px;
+  opacity:0.7;
+}
+
+/* ════════════════════════════════════════════════
+   RITUAL PAIR — Morning / Evening
+   ════════════════════════════════════════════════ */
+.ritual-pair{
+  display:grid;grid-template-columns:1fr 1fr;gap:10px;
+  margin-bottom:48px;
+}
+
+.ritual-btn{
+  background:rgba(255,255,255,0.5);
+  border:1px solid var(--hair);
+  border-radius:24px;
+  padding:24px 22px;
+  text-align:left;
+  position:relative;overflow:hidden;
+  cursor:pointer;
+  transition:all 0.5s var(--ease-out-expo);
+}
+
+.ritual-btn:hover{
+  background:rgba(255,255,255,0.75);
+  transform:translateY(-2px);
+}
+
+.ritual-btn.done{
+  background:var(--cream-deep);
+  border-color:transparent;
+}
+.ritual-btn.done::before{
+  content:'';position:absolute;top:14px;right:14px;
+  width:6px;height:6px;border-radius:999px;
+  background:var(--blush-deep);
+  animation:dot-pulse-soft 3s ease-in-out infinite;
+}
+
+@keyframes dot-pulse-soft{
+  0%,100%{box-shadow:0 0 0 0 rgba(232,165,165,0.6)}
+  50%{box-shadow:0 0 0 4px rgba(232,165,165,0)}
+}
+
+.ritual-icon{
+  margin-bottom:14px;
+  width:24px;height:24px;
+  position:relative;
+}
+.ritual-icon svg{display:block;transition:transform 0.6s var(--ease-out-expo)}
+.ritual-btn:hover .ritual-icon svg{transform:rotate(15deg)}
+
+.ritual-name{
+  font-family:'Fraunces',serif;font-weight:400;font-size:18px;
+  letter-spacing:-0.02em;color:var(--ink);margin-bottom:4px;
+}
+.ritual-state{
+  font-family:'Fraunces',serif;font-style:italic;font-size:13px;
+  color:var(--muted);
+}
+
+/* ════════════════════════════════════════════════
+   DIVIDER
+   ════════════════════════════════════════════════ */
+.divider{
+  display:flex;align-items:center;gap:16px;
+  margin:0 0 32px;
+}
+.divider-line{flex:1;height:1px;background:var(--hair-soft)}
+.divider-label{
+  font-family:'Fraunces',serif;font-style:italic;font-size:12px;
+  color:var(--soft);
+}
+
+/* ════════════════════════════════════════════════
+   ARC RING
+   ════════════════════════════════════════════════ */
+.arc-section{
+  text-align:center;margin-bottom:32px;
+  position:relative;
+}
+
+.ring-wrap{
+  position:relative;display:inline-block;margin-bottom:14px;
+}
+
+.ring-svg{
+  display:block;
+  filter:drop-shadow(0 8px 24px rgba(232,165,165,0.15));
+}
+
+/* Animate the ring stroke on load */
+.ring-track{
+  stroke-dasharray:0;
+  stroke-dashoffset:0;
+  transition:stroke-dashoffset 2.4s var(--ease-out-expo);
+}
+
+.ring-1{
+  stroke-dasharray:490;
+  stroke-dashoffset:490;
+  animation:draw-ring-1 2.4s var(--ease-out-expo) 2.6s forwards;
+}
+.ring-2{
+  stroke-dasharray:389;
+  stroke-dashoffset:389;
+  animation:draw-ring-2 2.4s var(--ease-out-expo) 2.8s forwards;
+}
+.ring-3{
+  stroke-dasharray:289;
+  stroke-dashoffset:289;
+  animation:draw-ring-3 2.4s var(--ease-out-expo) 3.0s forwards;
+}
+
+@keyframes draw-ring-1{to{stroke-dashoffset:245}}
+@keyframes draw-ring-2{to{stroke-dashoffset:180}}
+@keyframes draw-ring-3{to{stroke-dashoffset:115}}
+
+.ring-center{
+  position:absolute;inset:0;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;pointer-events:none;
+}
+.ring-value{
+  font-family:'Fraunces',serif;font-weight:300;
+  font-size:56px;letter-spacing:-0.045em;line-height:1;color:var(--ink);
+  opacity:0;
+  animation:fade-up 1s var(--ease-out-expo) 4.5s forwards;
+}
+.ring-label{
+  font-family:'Fraunces',serif;font-style:italic;font-size:12px;
+  color:var(--muted);margin-top:6px;
+  opacity:0;
+  animation:fade-up 1s var(--ease-out-expo) 4.7s forwards;
+}
+
+@keyframes fade-up{
+  from{opacity:0;transform:translateY(8px)}
+  to{opacity:1;transform:translateY(0)}
+}
+
+/* ════════════════════════════════════════════════
+   MICRO STATS
+   ════════════════════════════════════════════════ */
+.micro-stats{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:8px;
+  margin-bottom:40px;
+}
+.micro-stat{
+  text-align:center;padding:18px 8px;
+  background:rgba(255,255,255,0.4);
+  border-radius:16px;border:1px solid var(--hair-soft);
+  transition:all 0.4s var(--ease-out-expo);
+}
+.micro-stat:hover{
+  background:rgba(255,255,255,0.65);
+  transform:translateY(-2px);
+}
+.micro-dot{
+  width:6px;height:6px;border-radius:999px;
+  margin:0 auto 8px;
+}
+.micro-label{
+  font-size:11px;color:var(--muted);
+  letter-spacing:-0.005em;margin-bottom:6px;
+}
+.micro-value{
+  font-family:'Fraunces',serif;font-weight:400;
+  font-size:22px;color:var(--ink);
+  letter-spacing:-0.02em;
+}
+.micro-value-unit{
+  font-size:11px;color:var(--soft);margin-left:1px;
+}
+
+/* ════════════════════════════════════════════════
+   GOAL — declared, not whispered
+   ════════════════════════════════════════════════ */
+.goal{
+  background:linear-gradient(180deg,rgba(245,207,207,0.18),rgba(245,207,207,0.05));
+  border-radius:22px;
+  padding:26px;
+  border:1px solid rgba(232,165,165,0.18);
+  position:relative;overflow:hidden;
+}
+
+.goal::before{
+  content:'';position:absolute;
+  top:-50%;right:-30%;
+  width:200px;height:200px;
+  background:radial-gradient(circle,rgba(232,165,165,0.12) 0%,rgba(232,165,165,0) 70%);
+  pointer-events:none;
+}
+
+.goal-eyebrow{
+  font-family:'Fraunces',serif;font-style:italic;font-size:12px;
+  color:var(--blush-deep);margin-bottom:12px;position:relative;
+}
+.goal-text{
+  font-family:'Fraunces',serif;font-weight:400;
+  font-size:15.5px;color:var(--ink-soft);
+  line-height:1.55;letter-spacing:-0.005em;position:relative;
+}
+
+/* ════════════════════════════════════════════════
+   SIGNATURE — the daily exhale moment
+   ════════════════════════════════════════════════ */
+.exhale-overlay{
+  position:absolute;inset:0;
+  pointer-events:none;
+  z-index:10;
+  opacity:0;
+}
+
+.exhale-overlay.firing{
+  animation:exhale-fire 4.5s var(--ease-out-expo);
+}
+
+.exhale-overlay::before{
+  content:'';position:absolute;
+  top:-100%;left:0;right:0;height:200%;
+  background:linear-gradient(
+    180deg,
+    transparent 0%,
+    transparent 30%,
+    rgba(245,207,207,0.4) 45%,
+    rgba(232,165,165,0.5) 50%,
+    rgba(245,207,207,0.4) 55%,
+    transparent 70%,
+    transparent 100%
+  );
+}
+
+@keyframes exhale-fire{
+  0%{opacity:0;transform:translateY(-50%)}
+  20%{opacity:1}
+  80%{opacity:1}
+  100%{opacity:0;transform:translateY(50%)}
+}
+
+/* ════════════════════════════════════════════════
+   CONTROL PANEL — interactive controls below phone
+   ════════════════════════════════════════════════ */
+.control-panel{
+  max-width:600px;margin:0 auto;
+  padding:60px 24px 80px;
+  text-align:center;
+  color:var(--cream);
+}
+
+.control-eyebrow{
+  font-family:'Fraunces',serif;font-style:italic;font-size:13px;
+  color:var(--blush);margin-bottom:18px;
+}
+
+.control-title{
+  font-family:'Fraunces',serif;font-weight:300;
+  font-size:28px;letter-spacing:-0.025em;line-height:1.2;
+  margin-bottom:36px;color:var(--cream);
+}
+.control-title em{font-style:italic;color:var(--blush)}
+
+.control-grid{
+  display:grid;grid-template-columns:1fr 1fr;gap:12px;
+  margin-bottom:24px;
+}
+
+.control-btn{
+  padding:18px 20px;
+  background:rgba(245,242,234,0.04);
+  border:1px solid rgba(245,242,234,0.1);
+  border-radius:16px;
+  color:var(--cream);
+  font-family:'Inter Tight',sans-serif;
+  font-size:14px;font-weight:400;
+  letter-spacing:-0.005em;
+  cursor:pointer;
+  transition:all 0.4s var(--ease-out-expo);
+  text-align:left;
+  display:flex;flex-direction:column;align-items:flex-start;gap:6px;
+}
+.control-btn:hover{
+  background:rgba(245,242,234,0.08);
+  border-color:rgba(245,207,207,0.3);
+  transform:translateY(-2px);
+}
+.control-btn:active{
+  transform:translateY(0);
+}
+.control-btn-label{
+  font-family:'Fraunces',serif;font-style:italic;font-size:12px;
+  color:var(--blush);
+}
+.control-btn-name{
+  font-size:15px;color:var(--cream);
+}
+
+.control-note{
+  font-family:'Fraunces',serif;font-style:italic;font-size:13px;
+  color:#7A7670;line-height:1.6;
+  max-width:400px;margin:32px auto 0;
+}
+
+/* ════════════════════════════════════════════════
+   PHILOSOPHY SECTION
+   ════════════════════════════════════════════════ */
+.philosophy{
+  max-width:900px;margin:80px auto 0;
+  padding:80px 24px 120px;
+  color:var(--cream);
+}
+
+.phil-eyebrow{
+  font-family:'Fraunces',serif;font-style:italic;font-size:13px;
+  color:var(--blush);text-align:center;margin-bottom:18px;
+}
+
+.phil-title{
+  font-family:'Fraunces',serif;font-weight:300;
+  font-size:42px;letter-spacing:-0.035em;line-height:1.1;
+  text-align:center;margin-bottom:60px;
+  color:var(--cream);
+}
+.phil-title em{font-style:italic;color:var(--blush)}
+
+.phil-grid{
+  display:grid;grid-template-columns:repeat(2,1fr);gap:48px 60px;
+}
+
+.phil-item h3{
+  font-family:'Fraunces',serif;font-weight:400;
+  font-size:22px;letter-spacing:-0.02em;
+  color:var(--cream);margin-bottom:14px;
+  display:flex;align-items:baseline;gap:14px;
+}
+.phil-item h3 .phil-num{
+  font-style:italic;font-weight:300;font-size:14px;
+  color:var(--blush);min-width:24px;
+}
+.phil-item p{
+  color:#A09B92;font-size:14.5px;line-height:1.7;font-weight:300;
+  padding-left:38px;
+}
+.phil-item p strong{color:var(--cream);font-weight:400}
+
+@media (max-width:900px){
+  .phone{width:340px}
+  .phone-screen{height:720px}
+  .phil-grid{grid-template-columns:1fr;gap:36px}
+  .phil-title{font-size:32px}
+  .control-grid{grid-template-columns:1fr}
+}
+
+@media (max-width:480px){
+  .phone{width:320px}
+  .phone-screen{height:680px}
+  .day-number{font-size:88px}
+  .hero-name{font-size:36px}
+}
+</style>
+</head>
+<body>
+
+<!-- ════════════════════════════════════════════════
+     INTRO
+     ════════════════════════════════════════════════ -->
+<div class="intro-stage">
+  <div class="intro-eyebrow">SHIFT — the 10/10 experience</div>
+  <h1>This is what <em>insanely&nbsp;considered</em> feels like.</h1>
+  <p>Every detail you see and don't see was placed deliberately. Animations follow physics. Sounds are earned, not announced. Light moves. The phone breathes. Use the controls below to feel the signature moments.</p>
+  <div class="intro-hint">
+    <span>scroll · interact · listen with sound on</span>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════
+     PHONE
+     ════════════════════════════════════════════════ -->
+<div class="phone-stage">
+  <div class="phone-tilt">
+    <div class="phone">
+      <div class="phone-screen" id="screen">
+
+        <!-- Exhale overlay (signature moment) -->
+        <div class="exhale-overlay" id="exhale"></div>
+
+        <!-- Status bar -->
+        <div class="status">
+          <span>9:41</span>
+          <div class="status-right"><span>●●●</span><span>📶</span><span>🔋</span></div>
+        </div>
+
+        <!-- Content -->
+        <div class="content stagger">
+
+          <!-- App header -->
+          <div class="app-header">
+            <div class="app-name">SHIFT</div>
+            <div class="app-menu">⋯</div>
+          </div>
+
+          <!-- Hero -->
+          <div class="hero">
+            <div class="hero-greeting">Tuesday, the 28th</div>
+            <div class="hero-name">Good morning,<br><em>Juan Felipe.</em></div>
+          </div>
+
+          <!-- Day object -->
+          <div class="day-object">
+            <div class="day-meta">
+              <div class="day-meta-label">your work</div>
+              <div class="day-meta-label">77 to go</div>
+            </div>
+            <div class="day-number-row">
+              <div class="day-number"><span class="day-number-inner">13</span></div>
+              <div class="day-of">of ninety</div>
+            </div>
+            <div class="day-arc"><div class="day-arc-fill"></div></div>
+            <div class="day-streak-row">
+              <div class="streak-label">12 days unbroken</div>
+              <div class="streak-dots">
+                <div class="streak-dot"></div>
+                <div class="streak-dot"></div>
+                <div class="streak-dot"></div>
+                <div class="streak-dot"></div>
+                <div class="streak-dot"></div>
+                <div class="streak-dot"></div>
+                <div class="streak-dot"></div>
+                <div class="streak-dot"></div>
+                <div class="streak-dot"></div>
+                <div class="streak-dot"></div>
+                <div class="streak-dot"></div>
+                <div class="streak-dot"></div>
+                <div class="streak-dot empty"></div>
+                <div class="streak-dot empty"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Lesson card -->
+          <div class="lesson-card" id="lesson-card">
+            <div class="lesson-meta">
+              <div class="lesson-chapter">chapter II · identity</div>
+              <div class="lesson-time">3 min · today</div>
+            </div>
+            <div class="lesson-title">Why neurons that <em>fire&nbsp;together,</em> wire together.</div>
+            <div class="lesson-preview">Donald Hebb proposed this in 1949. By the end of this lesson, you'll see your daily actions differently — not as tasks, but as physical wiring.</div>
+            <div class="lesson-cta">
+              <span>Begin lesson</span>
+              <span class="lesson-cta-arrow">→</span>
+            </div>
+          </div>
+
+          <!-- Practice -->
+          <div class="practice-section">
+            <div class="section-head">
+              <div class="section-title">Today's <em>practice</em></div>
+              <div class="section-meta" id="practice-meta">2 of 4</div>
+            </div>
+
+            <div class="practice-row done" data-practice="0">
+              <div class="practice-check">✓</div>
+              <div class="practice-text">Complete payment system — RC Academy</div>
+            </div>
+
+            <div class="practice-row done" data-practice="1">
+              <div class="practice-check">✓</div>
+              <div class="practice-text">Test Vendia infrastructure</div>
+            </div>
+
+            <div class="practice-row" data-practice="2">
+              <div class="practice-check"></div>
+              <div class="practice-text">Contact 5 pilot brokers</div>
+            </div>
+
+            <div class="practice-row" data-practice="3">
+              <div class="practice-check"></div>
+              <div class="practice-text">Finish Vendia rollout</div>
+            </div>
+          </div>
+
+          <!-- Ritual pair -->
+          <div class="ritual-pair">
+            <div class="ritual-btn done">
+              <div class="ritual-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                  <circle cx="12" cy="12" r="10" stroke="#0F0E0C" stroke-width="1.2"/>
+                  <path d="M12 2 A 10 10 0 0 1 12 22 Z" fill="#0F0E0C"/>
+                </svg>
+              </div>
+              <div class="ritual-name">Morning</div>
+              <div class="ritual-state">Calibrated · 7:23</div>
+            </div>
+            <div class="ritual-btn">
+              <div class="ritual-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                  <circle cx="12" cy="12" r="10" stroke="#0F0E0C" stroke-width="1.2"/>
+                  <path d="M12 2 A 10 10 0 0 0 12 22 Z" fill="#0F0E0C"/>
+                </svg>
+              </div>
+              <div class="ritual-name">Evening</div>
+              <div class="ritual-state">at sunset</div>
+            </div>
+          </div>
+
+          <!-- Divider -->
+          <div class="divider">
+            <div class="divider-line"></div>
+            <div class="divider-label">your arc</div>
+            <div class="divider-line"></div>
+          </div>
+
+          <!-- Arc ring -->
+          <div class="arc-section">
+            <div class="ring-wrap">
+              <svg class="ring-svg" width="200" height="200" viewBox="0 0 200 200" style="transform:rotate(-90deg)">
+                <!-- Tracks -->
+                <circle cx="100" cy="100" r="78" fill="none" stroke="#0F0E0C" stroke-opacity="0.06" stroke-width="2"/>
+                <circle cx="100" cy="100" r="62" fill="none" stroke="#0F0E0C" stroke-opacity="0.06" stroke-width="2"/>
+                <circle cx="100" cy="100" r="46" fill="none" stroke="#0F0E0C" stroke-opacity="0.06" stroke-width="2"/>
+
+                <!-- Animated rings -->
+                <circle class="ring-1" cx="100" cy="100" r="78" fill="none" stroke="#E8A5A5" stroke-width="2" stroke-linecap="round"/>
+                <circle class="ring-2" cx="100" cy="100" r="62" fill="none" stroke="#D4846F" stroke-width="2" stroke-linecap="round"/>
+                <circle class="ring-3" cx="100" cy="100" r="46" fill="none" stroke="#B5CDB7" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+              <div class="ring-center">
+                <div class="ring-value">63</div>
+                <div class="ring-label">composite</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Micro stats -->
+          <div class="micro-stats">
+            <div class="micro-stat">
+              <div class="micro-dot" style="background:#E8A5A5"></div>
+              <div class="micro-label">Consistency</div>
+              <div class="micro-value">50<span class="micro-value-unit">%</span></div>
+            </div>
+            <div class="micro-stat">
+              <div class="micro-dot" style="background:#D4846F"></div>
+              <div class="micro-label">Action</div>
+              <div class="micro-value">54<span class="micro-value-unit">%</span></div>
+            </div>
+            <div class="micro-stat">
+              <div class="micro-dot" style="background:#B5CDB7"></div>
+              <div class="micro-label">Clean</div>
+              <div class="micro-value">60<span class="micro-value-unit">%</span></div>
+            </div>
+          </div>
+
+          <!-- Goal -->
+          <div class="goal">
+            <div class="goal-eyebrow">what you're becoming</div>
+            <div class="goal-text">"To become an excellent executer and reach 200 paid monthly clients averaging 99K COP, in 90 days."</div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════
+     CONTROL PANEL
+     ════════════════════════════════════════════════ -->
+<div class="control-panel">
+  <div class="control-eyebrow">try the signature moments</div>
+  <h2 class="control-title">Touch each control. Listen.<br><em>Feel</em> what's been built.</h2>
+
+  <div class="control-grid">
+    <button class="control-btn" onclick="sealAction(2)">
+      <span class="control-btn-label">action 01</span>
+      <span class="control-btn-name">Seal action #3 — broker outreach</span>
+    </button>
+    <button class="control-btn" onclick="sealAction(3)">
+      <span class="control-btn-label">action 02</span>
+      <span class="control-btn-name">Seal action #4 — Vendia rollout</span>
+    </button>
+    <button class="control-btn" onclick="triggerExhale()">
+      <span class="control-btn-label">signature moment</span>
+      <span class="control-btn-name">The daily exhale (sound + light)</span>
+    </button>
+    <button class="control-btn" onclick="resetAll()">
+      <span class="control-btn-label">reset</span>
+      <span class="control-btn-name">Start over</span>
+    </button>
+  </div>
+
+  <div class="control-note">
+    The exhale is what happens when you complete the evening review.<br>
+    A single moment. Once a day. Earned.
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════
+     PHILOSOPHY
+     ════════════════════════════════════════════════ -->
+<div class="philosophy">
+  <div class="phil-eyebrow">why every detail matters</div>
+  <h2 class="phil-title">The <em>invisible</em> work that<br>makes it feel <em>alive.</em></h2>
+
+  <div class="phil-grid">
+
+    <div class="phil-item">
+      <h3><span class="phil-num">01</span>The phone breathes</h3>
+      <p>The whole device floats almost imperceptibly — six-second cycle, two degrees of rotation. <strong>You don't notice it consciously.</strong> But your nervous system reads "alive object" instead of "static image."</p>
+    </div>
+
+    <div class="phil-item">
+      <h3><span class="phil-num">02</span>Atmospheric light</h3>
+      <p>Three layered radial gradients on the cream — pink dawn at the top, warm shadow at the bottom, soft glow on the right. The screen is <strong>never flat</strong>. It's morning light on cotton paper.</p>
+    </div>
+
+    <div class="phil-item">
+      <h3><span class="phil-num">03</span>The seal animation</h3>
+      <p>When you complete an action, the check rotates from -180° through a slight overshoot, settling into place. <strong>Feels like sealing wax.</strong> The row glows briefly. Both visual and tactile.</p>
+    </div>
+
+    <div class="phil-item">
+      <h3><span class="phil-num">04</span>The lesson card glows</h3>
+      <p>Two atmospheric blooms drift inside the dark card, ten-second cycles, opposite directions. <strong>The thinking room has weather.</strong> It's not static decoration — it's a living pocket of night.</p>
+    </div>
+
+    <div class="phil-item">
+      <h3><span class="phil-num">05</span>The streak's last dot pulses</h3>
+      <p>Day 12 has a soft blush halo that breathes every two seconds. <strong>It marks where you are right now.</strong> All other dots are still. Only the present moment has motion.</p>
+    </div>
+
+    <div class="phil-item">
+      <h3><span class="phil-num">06</span>The signature exhale</h3>
+      <p>When you complete the evening review, a wave of warm light passes from top to bottom of the screen, accompanied by one warm bell tone. Long decay. <strong>The day seals.</strong> It happens once a day. You'll learn to expect it.</p>
+    </div>
+
+    <div class="phil-item">
+      <h3><span class="phil-num">07</span>Sound as scarcity</h3>
+      <p>Three sounds total. The seal click when you complete an action. The temple bell at evening review. A soft chime at the day's first open. <strong>That's it.</strong> No notifications. No alerts. Sound becomes meaningful by being rare.</p>
+    </div>
+
+    <div class="phil-item">
+      <h3><span class="phil-num">08</span>Stagger on entry</h3>
+      <p>Every element fades up sequentially — 150ms apart, expo easing. <strong>The screen composes itself.</strong> Like a painter laying down strokes. By the end you feel: this was made for you, just now.</p>
+    </div>
+
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════
+     SCRIPT — interactivity, sound, animations
+     ════════════════════════════════════════════════ -->
+<script>
+// ═══ Audio synthesis with Web Audio API ═══
+let audioCtx;
+function ensureAudio(){
+  if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  if (audioCtx.state === 'suspended') audioCtx.resume();
+}
+
+// Seal click — short, warm, satisfying
+function playSeal(){
+  ensureAudio();
+  const t = audioCtx.currentTime;
+
+  // Two-layer click: low thunk + high tap
+  const lowOsc = audioCtx.createOscillator();
+  const lowGain = audioCtx.createGain();
+  lowOsc.frequency.value = 180;
+  lowOsc.type = 'sine';
+  lowGain.gain.setValueAtTime(0, t);
+  lowGain.gain.linearRampToValueAtTime(0.15, t + 0.005);
+  lowGain.gain.exponentialRampToValueAtTime(0.001, t + 0.15);
+  lowOsc.connect(lowGain).connect(audioCtx.destination);
+  lowOsc.start(t);
+  lowOsc.stop(t + 0.2);
+
+  const hiOsc = audioCtx.createOscillator();
+  const hiGain = audioCtx.createGain();
+  hiOsc.frequency.value = 800;
+  hiOsc.type = 'sine';
+  hiGain.gain.setValueAtTime(0, t);
+  hiGain.gain.linearRampToValueAtTime(0.05, t + 0.002);
+  hiGain.gain.exponentialRampToValueAtTime(0.001, t + 0.08);
+  hiOsc.connect(hiGain).connect(audioCtx.destination);
+  hiOsc.start(t);
+  hiOsc.stop(t + 0.1);
+}
+
+// Temple bell — long decay, warm fundamental
+function playBell(){
+  ensureAudio();
+  const t = audioCtx.currentTime;
+
+  // Fundamental + harmonics for bell-like tone
+  const freqs = [220, 440, 660, 880];
+  const amps = [0.25, 0.18, 0.08, 0.04];
+  const decays = [4, 3.5, 2.5, 1.8];
+
+  freqs.forEach((freq, i) => {
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+    osc.frequency.value = freq;
+    osc.type = 'sine';
+    gain.gain.setValueAtTime(0, t);
+    gain.gain.linearRampToValueAtTime(amps[i], t + 0.01);
+    gain.gain.exponentialRampToValueAtTime(0.0001, t + decays[i]);
+    osc.connect(gain).connect(audioCtx.destination);
+    osc.start(t);
+    osc.stop(t + decays[i] + 0.5);
+  });
+}
+
+// ═══ Practice action sealing ═══
+function sealAction(idx){
+  const row = document.querySelector(`.practice-row[data-practice="${idx}"]`);
+  if (!row) return;
+
+  if (row.classList.contains('done')){
+    // Toggle off - simple
+    row.classList.remove('done');
+    updatePracticeMeta();
+    return;
+  }
+
+  // Sealing animation
+  row.classList.add('sealing');
+  row.classList.add('done');
+  playSeal();
+
+  // Vibrate if available (mobile only)
+  if (navigator.vibrate) navigator.vibrate(8);
+
+  setTimeout(() => row.classList.remove('sealing'), 600);
+  updatePracticeMeta();
+}
+
+function updatePracticeMeta(){
+  const total = document.querySelectorAll('.practice-row').length;
+  const done = document.querySelectorAll('.practice-row.done').length;
+  document.getElementById('practice-meta').textContent = `${done} of ${total}`;
+}
+
+// ═══ Signature exhale moment ═══
+function triggerExhale(){
+  const overlay = document.getElementById('exhale');
+  overlay.classList.remove('firing');
+  void overlay.offsetWidth; // force reflow
+  overlay.classList.add('firing');
+  playBell();
+
+  if (navigator.vibrate) navigator.vibrate([30, 100, 50]);
+
+  setTimeout(() => {
+    overlay.classList.remove('firing');
+  }, 4500);
+}
+
+// ═══ Reset ═══
+function resetAll(){
+  document.querySelectorAll('.practice-row').forEach((row, i) => {
+    if (i < 2){
+      row.classList.add('done');
+    } else {
+      row.classList.remove('done');
+    }
+  });
+  updatePracticeMeta();
+}
+
+// ═══ Lesson card click ═══
+document.getElementById('lesson-card').addEventListener('click', () => {
+  // Subtle haptic preview when tapping the lesson
+  if (navigator.vibrate) navigator.vibrate(4);
+  // In real app this would navigate to lesson page
+});
+</script>
+
+</body>
+</html>
